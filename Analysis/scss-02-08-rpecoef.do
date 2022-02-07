@@ -2,9 +2,6 @@
 frames reset
 frame change default
 
-
-
-frames reset
 set varabbrev off
 use "Status Conflict among Small States\Data Analysis\Datasets\Derived\02-Processing\01-Dyadic\a-Base\scss-0201a-base.dta", clear
 
