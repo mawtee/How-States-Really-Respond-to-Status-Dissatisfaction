@@ -68,7 +68,8 @@ keep if `in'
 
 
 /// Estimate model
-logit midint W_defz B_defz W_mcaplnk_0 W_mcaplnk_1 W_mcaplnk_2 W_mcaplnk_3 W_mcaplnk_4 W_mcaplnk_5 W_mcaplnk_6 W_mcaplnk_7 B_mcaplnk_0 B_mcaplnk_1 B_mcaplnk_2 B_mcaplnk_3 B_mcaplnk_4 B_mcaplnk_5 B_mcaplnk_6 B_mcaplnk_7 pceyrsk_1 pceyrsk_2 pceyrsk_3 pceyrsk_4 `3way', cluster(ddyadid)
+xtset ddyadid year
+xtlogit midint W_defz B_defz W_mcaplnk_0 W_mcaplnk_1 W_mcaplnk_2 W_mcaplnk_3 W_mcaplnk_4 W_mcaplnk_5 W_mcaplnk_6 W_mcaplnk_7 B_mcaplnk_0 B_mcaplnk_1 B_mcaplnk_2 B_mcaplnk_3 B_mcaplnk_4 B_mcaplnk_5 B_mcaplnk_6 B_mcaplnk_7 pceyrsk_1 pceyrsk_2 pceyrsk_3 pceyrsk_4 `3way', re vce(cluster ddyadid)
 local paramno = e(k)
 qui est store pr
 estimates save prs, replace
