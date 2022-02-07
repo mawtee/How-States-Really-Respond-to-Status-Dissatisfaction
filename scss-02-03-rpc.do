@@ -3,6 +3,7 @@ macro drop _all
 frames reset
 use "Status Conflict among Small States\Data Analysis\Datasets\Derived\02-Processing\01-Dyadic\a-Base\scss-0201a-base.dta", clear
 
+xtset ddyadid year
 
 mark nonmiss 
 markout nonmiss mcap_1_lg1 comstsdefpw_1_lg1
@@ -23,26 +24,26 @@ forvalues k = 0/7 {
 
 /// Estimate models
 *| WIth CINC
-logit midint comz mcapz, cluster(ddyadid)
+xtlogit midint comz mcapz, re vce(cluster ddyadid)
 qui est store pr1
 
 *| With CINC and interaction
-logit midint comz mcapz c.comz#c.mcapz, cluster(ddyadid)
+xtlogit midint comz mcapz c.comz#c.mcapz, re vce(cluster ddyadid)
 est store pr2
 *| Manual interaction model allowing for smoother customization in esttab
 gen comzXmcapz = comz*mcapz
-logit midint comz mcapz comzXmcapz, cluster(ddyadid)
+xtlogit midint comz mcapz comzXmcapz, re vce(cluster ddyadid)
 qui est store pr2b
 
 *| With CINC(ln) smoothed
-logit midint comz mcaplnk_0 mcaplnk_1 mcaplnk_2 mcaplnk_3 mcaplnk_4 mcaplnk_5 mcaplnk_6 mcaplnk_7, cluster(ddyadid)
+xlogit midint comz mcaplnk_0 mcaplnk_1 mcaplnk_2 mcaplnk_3 mcaplnk_4 mcaplnk_5 mcaplnk_6 mcaplnk_7, re vce(cluster ddyadid)
 qui est store pr3
 
 *| With CINC(ln) smoothed and interaction
-logit midint comz mcaplnk_0 mcaplnk_1 mcaplnk_2 mcaplnk_3 mcaplnk_4 mcaplnk_5 mcaplnk_6 mcaplnk_7 c.comz#c.mcaplnk_0 c.comz#c.mcaplnk_1 c.comz#c.mcaplnk_2 c.comz#c.mcaplnk_3 c.comz#c.mcaplnk_4 c.comz#c.mcaplnk_5 c.comz#c.mcaplnk_6 c.comz#c.mcaplnk_7  , cluster(ddyadid) 
+xtlogit midint comz mcaplnk_0 mcaplnk_1 mcaplnk_2 mcaplnk_3 mcaplnk_4 mcaplnk_5 mcaplnk_6 mcaplnk_7 c.comz#c.mcaplnk_0 c.comz#c.mcaplnk_1 c.comz#c.mcaplnk_2 c.comz#c.mcaplnk_3 c.comz#c.mcaplnk_4 c.comz#c.mcaplnk_5 c.comz#c.mcaplnk_6 c.comz#c.mcaplnk_7  , re vce(cluster ddyadid)
 qui est store pr4
 *| Manual interaction model allowing for smoother customization in esttab
-logit midint comz mcaplnk_0 mcaplnk_1 mcaplnk_2 mcaplnk_3 mcaplnk_4 mcaplnk_5 mcaplnk_6 mcaplnk_7 comzXmcaplnk_0 comzXmcaplnk_1 comzXmcaplnk_2 comzXmcaplnk_3 comzXmcaplnk_4 comzXmcaplnk_5 comzXmcaplnk_6 comzXmcaplnk_7, cluster(ddyadid)
+xtlogit midint comz mcaplnk_0 mcaplnk_1 mcaplnk_2 mcaplnk_3 mcaplnk_4 mcaplnk_5 mcaplnk_6 mcaplnk_7 comzXmcaplnk_0 comzXmcaplnk_1 comzXmcaplnk_2 comzXmcaplnk_3 comzXmcaplnk_4 comzXmcaplnk_5 comzXmcaplnk_6 comzXmcaplnk_7, re vce(cluster ddyadid)
 est store pr4b
 
 
