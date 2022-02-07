@@ -54,7 +54,6 @@ xlogit midint defz mcaplnk_0 mcaplnk_1 mcaplnk_2 mcaplnk_3 mcaplnk_4 mcaplnk_5 m
 est store pr1
 
 *| REWB 
-xtset ddyadid year
 xtlogit midint W_defz B_defz mcaplnk_0 mcaplnk_1 mcaplnk_2 mcaplnk_3 mcaplnk_4 mcaplnk_5 mcaplnk_6 mcaplnk_7 W_defXR_mcaplnk_0 W_defXR_mcaplnk_1 W_defXR_mcaplnk_2 W_defXR_mcaplnk_3 W_defXR_mcaplnk_4 W_defXR_mcaplnk_5 W_defXR_mcaplnk_6 W_defXR_mcaplnk_7 B_defXR_mcaplnk_0 B_defXR_mcaplnk_1 B_defXR_mcaplnk_2 B_defXR_mcaplnk_3 B_defXR_mcaplnk_4 B_defXR_mcaplnk_5 B_defXR_mcaplnk_6 B_defXR_mcaplnk_7, re vce(cluster ddyadid 
 local paramno2 = e(k)
 est store pr2
@@ -63,13 +62,10 @@ test _b[W_defz] = _b[B_defz]
 scalar wald1 = r(p)
 
 *| Random with peace years smoothed
-xtset ddyadid year
 xtlogit midint defz mcaplnk_0 mcaplnk_1 mcaplnk_2 mcaplnk_3 mcaplnk_4 mcaplnk_5 mcaplnk_6 mcaplnk_7 c.defz#c.mcaplnk_0 c.defz#c.mcaplnk_1 c.defz#c.mcaplnk_2 c.defz#c.mcaplnk_3 c.defz#c.mcaplnk_4 c.defz#c.mcaplnk_5 c.defz#c.mcaplnk_6 c.defz#c.mcaplnk_7 pceyrsk_1 pceyrsk_2 pceyrsk_3 pceyrsk_4, re vce(cluster ddyadid) 
 est store pr3
 
-
 *| REWB with peace years smoothed 
-xtset ddyadid year
 xtlogit midint W_defz B_defz mcaplnk_0 mcaplnk_1 mcaplnk_2 mcaplnk_3 mcaplnk_4 mcaplnk_5 mcaplnk_6 mcaplnk_7 W_defXR_mcaplnk_0 W_defXR_mcaplnk_1 W_defXR_mcaplnk_2 W_defXR_mcaplnk_3 W_defXR_mcaplnk_4 W_defXR_mcaplnk_5 W_defXR_mcaplnk_6 W_defXR_mcaplnk_7 B_defXR_mcaplnk_0 B_defXR_mcaplnk_1 B_defXR_mcaplnk_2 B_defXR_mcaplnk_3 B_defXR_mcaplnk_4 B_defXR_mcaplnk_5 B_defXR_mcaplnk_6 B_defXR_mcaplnk_7 pceyrsk_1 pceyrsk_2 pceyrsk_3 pceyrsk_4, re vce(cluster ddyadid)
 local paramno4 = e(k)
 est store pr4
