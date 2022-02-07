@@ -155,7 +155,8 @@ qui drop if `in1' != 1
 
 	
 // Estimate model (put vars into macros later)
-logit midint `W_iv' `B_iv' `W_mcapk' `B_mcapk' `W_controls' `B_controls' `pceyrsk' `stsgi' `3wayi', cluster(ddyadid) difficult
+xtset ddyadid year
+xtlogit midint `W_iv' `B_iv' `W_mcapk' `B_mcapk' `W_controls' `B_controls' `pceyrsk' `stsgi' `3wayi', re vce(cluster ddyadid)
 estimates save prcoef, replace
 keep `iv' `controls' `mcapk' pceyrs `W_iv' `B_iv' `W_mcapk' `B_mcapk' `W_controls' `B_controls' `pceyrsk' `stsgi' `3wayi' `2wayi' small_1 middle_1 major_1 world_1 midint ddyadid year
 local paramno = e(k)
