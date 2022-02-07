@@ -1,7 +1,4 @@
-/// So simple interaction between status gains and status deficit up to 20 years most recently conflict
-///Beyond this point, and in line with theoretical expectations, the moderating effect of the positional ramifications
-///of past conflict is impossible to disentangle from the development of unobserved, heterogeneuous
-///influences and leaders' neglect or disregard of past experiences.
+
 
 
 frames reset
