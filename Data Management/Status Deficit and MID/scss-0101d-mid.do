@@ -13,71 +13,57 @@ log using "Status Conflict among Small States\Data Analysis\Replication Files\St
 
 * Description *
 *************
-* This do file generates a fully operationalised version of the dyadic mid dataset v3.1 for use in the regressive and distributive modelling of status-disssatissfaction theory.
+* This do file generates a fully operationalised version of the dyadic mid dataset v3.1.
+
+* Set up Stata environment *
+****************************
+version 17
+macro drop _all 
+capture log close 
+clear all 
+drop _all 
+set linesize 255
 
 
-* Set up Stata *
-****************
-version 16
-clear all
-macro drop all
-
-
-* Load dyadic mid dataset v3.1 
+* Clean dataset
 ******************************
-/// Load dyadic MID datset v3.1
+// Load data
 import delimited "Status Conflict among Small States\Data Analysis\Datasets\Source\MID_Dyads_3.1\MID_Dyads_3.1_Moaz.csv" ,clear
 
-/// Drop redundant observations/variables
+// Drop redundant observations/variables
 drop if strtyr < 1950 | strtyr > 2000
 keep disno dyindex statea namea stateb nameb strtyr year outcome fatlev hihost rolea roleb war
 
 
-* Keep only dyadic disputes in which side1 is the primary initiator and side2 is the primary target (variance in the motives and relevance of joiners on both sides is likely to produce an unreliable and distorted picture of an initiating state's motivations and intended target)
-****************************************************************************************************************************************************************************
+// Keep only dyadic disputes in which countri  is the primary initiator and country j is the primary target 
 keep if rolea == 1 & roleb == 3
 
-
-* Keep only the last year of each dyadic dispute (outcomes are listed for last year of dispute only)
-****************************************************************************************************
-/// Peform stable sort
+// Keep only the last year of each dyadic dispute (outcomes are listed for last year of dispute only)
 sort dyindex statea stateb strtyr year
-
-/// Keep if observation number equals total number of observations
 by dyindex statea stateb strtyr: keep if _n == _N
 
-
-* Recode outcomes
-********************
-
-/// Victory
+// Recode MID outcomes
+*| Victory
 replace outcome = 1 if outcome == 4
-
-/// Defeat
+*| Defeat
 replace outcome = 2 if outcome == 3
-
-/// Stalemate
+*| Stalemate
 replace outcome = 3 if inlist(outcome, 5, 6 , 7, 8)
-
-/// Recode remaining 0 outcomes as stalemate
+*| Recode remaining 0 outcomes as stalemate
 replace outcome = 3 if outcome == 0
 
-
-* Generate additional variables
-*******************************
-/// Generate MID initiation indicator
+// Generate MID indicator variables
+*| MID initiation indicator (DV)
 gen midint = 1
-
-/// Generate fatal MID indicator
+*| Generate fatal MID indicator (extra DV)
 gen fmidint = 1 if fatlev >= 1
 replace fmidint = 0 if fmidint != 1
 
-/// Generate directed dyad ID
+// Generate directed dyad ID
 gen ddyadid = (statea*1000) + stateb
 
 
-* Identify and drop duplicate observations
-*******************************************
+// Identify and drop duplicates observations
 duplicates tag ddyadid strtyr, gen(dup)
 bysort ddyadid strtyr: egen maxhost = max(hihost)
 drop if hihost != maxhost
@@ -85,9 +71,7 @@ duplicates drop ddyadid strtyr, force
 isid ddyadid strtyr
 drop dup maxhost
 
-
-* Rename variables
-******************
+// Rename variables
 rename statea ccode1
 rename namea cabb1
 rename stateb ccode2
@@ -99,8 +83,7 @@ rename roleb role2
 rename war warint
 
 
-* Label variables
-*****************
+// Label variables
 label var disno "Dispute number"
 label var dyindex "Dyadic dispute index"
 label var ddyadid "Directed dyad ID"
@@ -129,9 +112,7 @@ label var warint "War initiation"
 label var midint "MID initiation"
 label var fmidint "Fatal MID initation"
 
-
-* Save datatset
-***************
+// Save datatset
 order ddyadid, after(dyindex)
 order midint, before(outcome)
 sort year ccode1 ccode2
