@@ -3,13 +3,13 @@
 capture log close
 log using "Status Conflict among Small States\Data Analysis\Replication Files\Stata Log Files\01-Data Management\02-Controls & Components\c-V-Dem Measures\scss-0102c-vdemm", replace
 
-***************************************************************
-* Generate a directed dyadic dataset of various V-Dem Measures*
-***************************************************************
-
 * Programme: scss-0102c-vdemm.do
 * Project: Status Conflict among Small States
 * Author: Matthew Tibbles
+
+***************************************************************
+* Generate a directed dyadic dataset of various V-Dem Measures*
+***************************************************************
 
 * Description *
 ***************
