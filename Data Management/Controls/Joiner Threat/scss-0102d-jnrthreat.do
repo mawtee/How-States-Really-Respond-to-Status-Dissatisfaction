@@ -1,19 +1,18 @@
 * Open log *
-*----------*
-
+************
 capture log close
 log using "Status Conflict among Small States\Data Analysis\Replication Files\Stata Log Files\01-Data Management\02-Controls & Components\d-Joiner Threat\scss-0102d-jnrthreat", replace
+
+* Programme: scss-0102d-jnrthrt.do
+* Project: How States Really Respond to Status Dissatisfaction: a closer look at the material and temporal dynamics of status-driven conflict.
+* Author: Matthew Tibbles
 
 **************************************************************
 * Generate joiner threat measure *
 **************************************************************
 
-* Programme: scss-0102d-jnrthrt.do
-* Project: Status Conflict among Small States
-* Author: Matthew Tibbles
-
 * Description *
-*-------------*
+***************
 
 * This do-file generates a bespoke measure of the threat posed by potential joiners to an MID - joiner-threat.
 * Joiner threat equals the sum of the material capabilities (CINC) of side 2's defensive allies and contiguous neighbours.
@@ -161,7 +160,6 @@ save "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data 
 
 * Close Log *
 *************
-
 log close
 exit
 
