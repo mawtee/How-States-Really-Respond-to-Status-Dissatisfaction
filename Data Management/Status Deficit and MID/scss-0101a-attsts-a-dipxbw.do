@@ -3,13 +3,13 @@
 capture log close
 log using "Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\a-Attributed Status\scss-0101a-attsts-a-dipxbw" ,replace
 
-* Programme: scss-0101a-attsts-a-dipxbw.do
-* Project: How States Really Respond to Status Dissatisfaction: a closer look at the material and temporal dynamics of status-driven conflict.
-* Author: Matthew Tibbles
-
 **************************************************************************************************
 * Generate weighted diplomatic exchange datatset adjusted for low-capability-high distance bonus *
 **************************************************************************************************
+
+* Programme: scss-0101a-attsts-a-dipxbw.do
+* Project: How States Really Respond to Status Dissatisfaction: a closer look at the material and temporal dynamics of status-driven conflict.
+* Author: Matthew Tibbles
 
 * Description *
 ***************
