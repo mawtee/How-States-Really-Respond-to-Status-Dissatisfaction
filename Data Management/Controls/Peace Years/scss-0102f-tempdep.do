@@ -3,13 +3,13 @@
 capture log close
 log using "Status Conflict among Small States\Data Analysis\Replication Files\Stata Log Files\01-Data Management\02-Controls & Components\f-Temporal Dependence\scss-0102f-tempdep", replace
 
-******************************************************
-* Generate temporal dependence peace years variables *
-******************************************************
-
 * Programme: scss-0102f-tempdep.do
 * Project: Status Conflict among Small States
 * Author: Matthew Tibbles
+
+******************************************************
+* Generate temporal dependence peace years variables *
+******************************************************
 
 * Description *
 ***************
