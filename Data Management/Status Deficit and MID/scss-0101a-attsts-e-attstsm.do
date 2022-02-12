@@ -1,4 +1,4 @@
- *Open log *
+* Open log *
 ************
 capture log close
 log using "Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\a-Attributed Status\scss-0101a-attsts-e-attstsm" ,replace
