@@ -13,7 +13,7 @@ log using "Status Conflict among Small States\Data Analysis\Replication Files\St
 
 * Description *
 ***************
-* This do-file recodes the weighted diplomatic exchange dataset by applying a bonus treatment to relevant dyads.
+* This do-file recodes the weighted diplomatic exchange dataset by applying a bonus treatment to applicable country dyads.
 * Where the capital-to-capital distance between a dyad pair is greater than the mean, and where the material capabilities of the sending state are below the median, 
 * the level of diplomatic representation of country i at country j is mulitplied by 1.5 so as to give greater weight to the particuarly costly investment of sending
 * embassies for states with geographical and material constraints.
