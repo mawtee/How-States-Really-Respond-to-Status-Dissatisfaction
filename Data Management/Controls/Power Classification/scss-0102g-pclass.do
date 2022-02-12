@@ -3,54 +3,76 @@
 capture log close
 log using "Status Conflict among Small States\Data Analysis\Replication Files\Stata Log Files\01-Data Management\02-Controls & Components\g-Power classification\scss-0102g-pclass", replace
 
-**************************************************
-* Generate monadic small state indicator dataset *
-**************************************************
-
-* Programme: scss-0102g-small.do
-* Project: Status Conflict among Small States
+* Programme: scss-0102g-pclass.do
+* Project: How States Really Respond to Status Dissatisfaction: a closer look at the material and temporal dynamics of status-driven conflict.
 * Author: Matthew Tibbles
+
+**************************************************
+* Generate expected status group ranks dataset *
+**************************************************
 
 * Description *
 ***************
-* This do-file generates a monadic small state indicator dataset using annual ranks of material capabilities
-* A broad distinction is drawn between small states and major powers where a state is or aspires to be a major power in year t if its material capabilities rank is between 1 and 25 in year t and it has recieved a top-25 rank for 5 consecutive years or more (as part of either the runninng or a previous spelll)
-* In addition, for every year that constitutes the beginning of either a 5 year spell or a spell of at least 1 year any time after a previous 5 year spell, I compute a 5 year upward transition spell, which is designed to account for the state's perception of self as a x power and, thus, the different expectations and behavioural strategies associated with major powers as compared to smaller states
-* Following the same logic, I comlute a 5 year 'fading power' spell
-*1. 5 year spell to qualify. 2. if already had 5 year spell, new 5 year spell begins with qualify year. 3. 5 year upwards spell before the beginning of a spell, and 5 year downwards spell following end of spell.
+* This do-file generates expected status group ranks using annual global ranks of material capabilities.
+* Expected status group ranks are based on the following ranking system:
+* 1 - World power = 1-3
+* 2 - Major power = 4-15
+* 3 - Middle power = 16-40
+* 4 - Small state =  <40
 
-* Set up Stata *
-****************
-version 16
-clear all
-macro drop all
-set linesize 90
+* Classification for groups ranks above small power require that a country meet the given rank threshold for at least 5 consecutive years
+* either as part of a running spell or previous spell. The purpose of this design is to fillter out "outlier" years in which a given country
+* experiences a sudden but short-lived boost in material capabilities as a result of, for example, civillian mobilisation.
 
-* Generate base indicators
-********************************
+* Additionally, all group ranks are adjusted for "transition" years, which represent either the 5 year spell before the year in which a country moves to a higher expected
+* status rank (upward transition) OR the 5 year spell after the year in which a country moves to a lower expected status rank (downward transition). 
+* For upwards transition years, a country is attributed the rank which is given in t+5. For downward transition years, a country is attributed the rank which it
+* is given in t-5. The purpose of this design is to account for temporal differences between a country's perception of self and how it is percieved by other countries.
+* A rising middle power will see itself as a major power (and thus behave like a major power) before other countries recognise it as such.
+* A fading major power will continue to see itself as a major power (and thus behave like major power) despite being recognised by other countries as a middle power. 
 
-/// Load monadic system membership dataset
+* Set up Stata environment *
+****************************
+version 17
+macro drop _all 
+capture log close 
+clear all 
+drop _all 
+set linesize 255
+
+* Required packages
+local packages tsspell 
+foreach p in `packages' {
+    capture `p'
+    if _rc {
+        ssc install `p'
+    }
+}
+
+* Generate base expected status group ranks
+********************************************
+// Load monadic system membership dataset
 use "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\02-Controls & Components\x-Embedded\scss-0102x-emb-symemmon.dta", clear
 
-/// Merge with material capabilities dataset
+// Merge with material capabilities dataset
 rename ccode ccode1
 merge 1:1 ccode year using "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\b-Expected Status\scss-0101b-expsts-a-pw.dta", keep (match master) keepusing(expgblsts) nogen
 
-/// Drop redundant year
+// Drop redundant years
 drop if year < 1949 | year > 2000
 
-/// Declare time series format
+// Declare time series format
 tsset ccode year
 
-/// Generate spell information if rank is between 1 and 15 on material capabilities
+// Generate spell information if rank is between 1 and 15 on material capabilities
 tsspell, cond(expgblstspw <= 15)
 
+// Rename variav
 foreach var of varlist _seq _spell _end {
 	rename `var' `var'_maj
 }
-	
-	
-/// Calculate spell length
+		
+// Calculate spell length
 egen splength_maj = max(_seq_maj), by(ccode _spell_maj)
 
 /// Generate major power qualification indicator for spells of at least 5 years 
@@ -86,6 +108,7 @@ foreach maj of varlist maj_2_lg1-maj_2_ld5 {
 
 replace major = 0 if major != 1
 
+Middle Powers
 *************************************************************************************************************************
 /// Generate spell information if rank is between 16 and 40 on material capabilities
 tsspell, cond(expgblstspw >= 16 & expgblstspw <= 40)
@@ -112,7 +135,7 @@ gen mid_2 = 1 if mid_past == 1 & splength_mid >= 1 & splength_mid != .
 tab cabb if splength_mid >= 1 & splength_mid <= 4 & mid_2 != 1
 
 
-* Generate revised major power indicator accounting for rising and fading power spells
+* Generate revised middle power indicator accounting for rising and fading power spells
 **************************************************************************************
 
 /// Generate 1/5 year lags/leads of major power indicator 
@@ -134,7 +157,7 @@ replace middle = 0 if major == 1
 
 replace middle = 0 if middle != 1
 
-
+World
 ****************************************************************************************************************
 /// Generate spell information if rank is between 1 and 3 on material capabilities
 tsspell, cond(expgblstspw >= 1 & expgblstspw <= 3)
@@ -161,7 +184,7 @@ gen wor_2 = 1 if wor_past == 1 & splength_wor >= 1 & splength_wor != .
 tab cabb if splength_wor >= 1 & splength_wor <= 4 & wor_2 != 1
 
 
-* Generate revised major power indicator accounting downwards/upwards transition year (5 years either side)
+* Generate revised world power indicator accounting downwards/upwards transition year (5 years either side)
 **************************************************************************************
 
 /// Generate 1/5 year lags/leads of major power indicator 
