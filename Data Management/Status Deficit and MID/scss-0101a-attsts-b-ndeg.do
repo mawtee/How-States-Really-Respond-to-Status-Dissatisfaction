@@ -3,13 +3,13 @@
 capture log close
 log using "Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\a-Attributed Status\scss-0101a-attsts-b-ndeg" ,replace
 
-*********************************************************************************
-* Subset bonus weighted diplomatic exchange datatset into nodes and edges lists *
-*********************************************************************************
-
 * Programme: scss-0101a-attsts-b-ndeg.do
 * Project: How States Really Respond to Status Dissatisfaction: a closer look at the material and temporal dynamics of status-driven conflict.
 * Author: Matthew Tibbles
+
+*********************************************************************************
+* Subset bonus weighted diplomatic exchange datatset into nodes and edges lists *
+*********************************************************************************
 
 * Description *
 ***************
