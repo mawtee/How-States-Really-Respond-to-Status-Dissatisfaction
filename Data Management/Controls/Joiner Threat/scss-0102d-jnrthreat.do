@@ -7,13 +7,12 @@ log using "Status Conflict among Small States\Data Analysis\Replication Files\St
 * Project: How States Really Respond to Status Dissatisfaction: a closer look at the material and temporal dynamics of status-driven conflict.
 * Author: Matthew Tibbles
 
-**************************************************************
+**********************************
 * Generate joiner threat measure *
-**************************************************************
+**********************************
 
 * Description *
 ***************
-
 * This do-file generates a bespoke measure of the threat posed by potential joiners to an MID - joiner-threat.
 * Joiner threat equals the sum of the material capabilities (CINC) of side 2's defensive allies and contiguous neighbours.
 
@@ -25,6 +24,7 @@ capture log close
 clear all 
 drop _all 
 set linesize 255
+
 
 * Clean system membership and contiguity datasets
 *******************************************************
