@@ -1,9 +1,8 @@
 * Open log *
 ************
 capture log close
-log using "Status Conflict among Small States\Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\a-Attributed Status\scss-0101a-attsts-a-dipxbw" ,replace
-
-* Project: Status Conflict among Small States
+log using "Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\a-Attributed Status\scss-0101a-attsts-a-dipxbw" ,replace
+* Project: How States Really Respond to Status Dissatisfaction: a closer look at the material and temporal dynamics of status-driven conflict.
 * Programme: scss-0101a-attsts-a-dipxbw.do
 * Author: Matthew Tibbles
 
