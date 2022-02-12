@@ -1,5 +1,5 @@
 * Open log *
-*----------*
+************
 
 capture log close
 log using "Status Conflict among Small States\Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\b-Expected Status\scss-0101c-defdis" ,replace
@@ -8,40 +8,37 @@ log using "Status Conflict among Small States\Data Analysis\Replication Files\St
 *Project: Status Conflict among Small States
 *Author: Matthew Tibbles
 
-*-------------------------------------------------------------*
+****************************************************************
 * Generate status deficit and chronic dissatisfaction measures *
-*-------------------------------------------------------------*
+****************************************************************
 
 * Description *
-*-------------*
+***************
 * This do-file generates community and global measures of status deficit and chronic dissatisfaction.
 * Status deficit defined as expected status minus attributed status while chronic dissatisfaction is an indicator variable that equals 1 if a state has below average status deficit in year t and t-9.
 
-
-* Set up Stata *
-*--------------*
+* Set up Stata environment *
+****************************
 version 17
-frames reset
-clear all
-macro drop all
-
+macro drop _all 
+capture log close 
+clear all 
+drop _all 
+set linesize 255
 
 
 * Generate status deficit measures
 ***********************************
-
 /// Load attributed status dataset
 use  "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\a-Attributed Status\e-Attributed Status Measures\scss-0101a-attsts-e-attstsm.dta", clear
 drop if year > 2000
 rename ccode ccode1 
 rename cabb cabb1
 
-
 /// Merge with expected status datasets
 merge 1:1 ccode1 year using "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\b-Expected Status\scss-0101b-expsts-a-pw.dta", keep(match master) keepusing(expcomstspw expgblstspw) nogen
 merge 1:1 ccode1 year using "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\b-Expected Status\scss-0101b-expsts-c-nm.dta", keep(match master) keepusing(expcomstsnm expgblstsnm) nogen
 merge 1:1 ccode1 year using "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\b-Expected Status\scss-0101b-expsts-d-pwnm.dta", keep(match master) keepusing(expcomstspwnm expgblstspwnm) nogen
-
 
 /// Generate status deficit measures
 gen comstsdefpw = expcomstspw - attcomsts
@@ -57,7 +54,6 @@ foreach var of varlist comstsdefpw-gblstsdefpwnm {
 
 * Generate chronic dissatisfaction measures
 ****************************************************
-
 /// Generate variables to store community deficit means
 gen comdefpwav = .
 gen comdefnmav = .
@@ -65,7 +61,6 @@ gen comdefnmav = .
 /// Store levels of community/year in local macro
 levelsof com, local(coml)
 levelsof year, local(yrl)
-
 
 *>> Run the following commands for each community
 foreach c in `coml' {
@@ -146,7 +141,7 @@ save "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data 
 
 
 * Close Log *
-*-----------*
+*************
 log close
 exit
 
