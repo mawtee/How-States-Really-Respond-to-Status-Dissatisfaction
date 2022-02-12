@@ -1,6 +1,5 @@
 * Open log *
 ************
-
 capture log close
 log using "Status Conflict among Small States\Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\b-Expected Status\scss-0101c-defdis" ,replace
 
