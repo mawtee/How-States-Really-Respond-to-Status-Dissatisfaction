@@ -3,9 +3,9 @@
 capture log close
 log using "Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\b-Expected Status\scss-0101b-expsts-a-pw" ,replace
 
-*Programme: scss-0101b-expsts-a-pw.do
+* Programme: scss-0101b-expsts-a-pw.do
 * Project: How States Really Respond to Status Dissatisfaction: a closer look at the material and temporal dynamics of status-driven conflict.
-*Author: Matthew Tibbles
+* Author: Matthew Tibbles
 
 ***************************************************
 * Generate power-based expected status measures   *
