@@ -3,13 +3,13 @@
 capture log close
 log using "Status Conflict among Small States\Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\d-Militarized Interstate Disputes\scss-0101d-mid" ,replace
 
-*Programme: scss-0101d-mid.do
-*Project: Status Conflict among Small States
-*Author: Matthew Tibbles
+* Programme: scss-0101d-mid.do
+* Project: Status Conflict among Small States
+* Author: Matthew Tibbles
 
-*************************************************
-* Clean and operationalise dyadic MID datatset  *
-*************************************************
+******************************
+* Clean dyadic MID datatset  *
+******************************
 
 * Description *
 *************
