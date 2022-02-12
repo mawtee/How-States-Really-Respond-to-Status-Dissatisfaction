@@ -7,16 +7,15 @@ log using "Status Conflict among Small States\Data Analysis\Replication Files\St
 * Project: Status Conflict among Small States
 * Author: Matthew Tibbles
 
-***********************************************************************************
-* Generate appended netstat dataset for calculation of attributed status measures *
-***********************************************************************************
+****************************************************************
+* Appended netstat dataset for calculation of attributed staus *
+****************************************************************
 
 * Description *
 ***************
-* This do-file stacks the netstat datasets for the calculation of attributed status measures.
-* The appended dataset is subsquently cleaned of noisy observations and merged with the state system membership dataset to generate observations for all years between 1940 and 2005.
+* This do-file stacks the netstat datasets for the calculation of attributed status.
+* The appended dataset is subsequently cleaned and merged with the state system membership dataset with observations for all years between 1940 and 2005.
 * Finally, PageRanks are generated for all years using linear interpolation, and community memberships are carried forward using the ssc module carryforward.
-
 
 * Set up Stata *
 ****************
@@ -24,23 +23,33 @@ version 16
 clear all
 macro drop all
 
-
-* Append netstat datasets
-************************
-/// Load netstat dataset for 1940 (first year of observation)
-use "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\a-Attributed Status\c-Network Statistics\scss-0101a-attsts-c-netstat-1940.dta" ,replace
-
-*~ Run the following commands for each year
-foreach year of numlist 1950 (5) 2005 {
-    
-	/// Append remaining years     
-	    append using "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\a-Attributed Status\c-Network Statistics\scss-0101a-attsts-c-netstat-`year'.dta"
+* Required packages *
+*********************
+local packages carryforward 
+foreach p in `packages' {
+    capture `p'
+    if _rc {
+        ssc install `p'
+    }
 }
 
 
-* Clean appended dataset of noisy observations(arbitrarily low PageRanks resulting in singular community membership caused by zero in-links)
+* Append netstat datasets
+**************************************************************
+// Load netstat dataset for 1940 (first year of observation)
+use "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\a-Attributed Status\c-Network Statistics\scss-0101a-attsts-c-netstat-1940.dta" ,replace
+
+// Run the following commands for each year
+foreach year of numlist 1950 (5) 2005 {
+    
+    *|Append remaining years     
+    append using "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\a-Attributed Status\c-Network Statistics\scss-0101a-attsts-c-netstat-`year'.dta"
+}
+
+
+* Remove arbitrarily low PageRanks resulting from singular community membership due to zero in-links
 ********************************************************************************************************************************************
-/// Identify and list potentially noisy observations 
+// Identify possible noise
 bysort year com: gen comsize = _N
 list if comsize == 1
 count if comsize == 1
@@ -49,12 +58,12 @@ bysort year: egen minpagerank = min(pagerank)
 count if comsize == 1 & pagerank == minpagerank
 *| All 32 singular community cases have the lowest possible PageRank in year of observation
 
-/// Recode noisy observations as missing values for both community and pagerank
+// Recode noisy observations as missing values for both community and pagerank
 replace com = . if comsize == 1
 replace pagerank = . if comsize == 1
 replace comsize = . if comsize == 1
 
-/// Generate minimum community size variable to check for other potentially noisy observations
+// Generate minimum community size variable to check for other potentially noisy observations
 bysort year: egen mincom = min(comsize)
 tab mincom year
 bysort mincom year: gen unique = _n == 1
@@ -69,26 +78,25 @@ tab year cabb if comsize == r(min)
 *| PHI
 *| RVN
 *| THI
-*| Community is compromised of states situated in or around or south east Asia
+*| Community is compromised of states situated in or around or south east Asia 
 
-/// Drop redundant variables
+// Drop redundant variables
 drop comsize minpagerank mincom unique
 
-/// Save
+// Save
 sort year ccode
 compress
 save "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\a-Attributed Status\d-Network Statistics Appended\scss-0101a-attsts-d-netstatapp.dta" ,replace
 
-
 * Merge appended dataset with monadic state system membership dataset to generate observations for all years between 1940 and 2005
 *********************************************************************************************************************************
-/// Load state system membership dataset
+// Load state system membership dataset
 use "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\02-Controls & Components\x-Embedded\scss-0102x-emb-symemmon.dta" ,clear
 
-/// Merge with appended netstat dataset
+// Merge with appended netstat dataset
 merge 1:1 ccode year using "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\01-Status Deficit & MID\a-Attributed Status\d-Network Statistics Appended\scss-0101a-attsts-d-netstatapp.dta"
 
-/// Review merge
+// Review merge
 tab _m
 *| not matched (1) =  6939
 *| matched (3) = 1785
@@ -99,17 +107,17 @@ drop _m
 
 * Interpolate PageRanks for all years and carry forward community memberships
 *****************************************************************************
-/// Interpolate PageRanks by year
+// Interpolate PageRanks by year
 by ccode: ipolate pagerank year, gen(ipagerank)
 replace pagerank = ipagerank
 drop ipagerank
 
-/// Carry forward community memberships until non-missing value is encountered
+// Carry forward community memberships for missing years
 bysort ccode: carryforward com, gen(com2)
 replace com = com2
 drop com2
 
-/// Drop missing values and redundant observations
+// Drop missing values and redundant observations
 drop if pagerank == .
 drop if year <1949
 
