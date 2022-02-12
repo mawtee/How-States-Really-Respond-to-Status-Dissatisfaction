@@ -13,60 +13,59 @@ log using "Status Conflict among Small States\Data Analysis\Replication Files\St
 
 * Description *
 ***************
-* This do-file generates an undirected dyadic dataset for contiguit using the COW Direct Contiguity dataset v3.2
+* This do-file transforms COW Direct Contiguity dataset v3.2 to undirected dyadic format
  
+* Set up Stata environment *
+****************************
+version 17
+macro drop _all 
+capture log close 
+clear all 
+drop _all 
+set linesize 255
 
-* Set up Stata *
-****************
-version 16
-clear all
-macro drop all
-set linesize 90
-
-* Load dataset and generate contiguous indicator
+* Clean dataset and generate contiguous indicator
 ************************************************
-
 /// Load dataset
 import delimited "Status Conflict among Small States\Data Analysis\Datasets\Source\DirectContiguity320\contdird.csv", clear
 
-/// Drop redundant observations/variables
+// Drop redundant observations/variables
 drop if year < 1949 | year > 2000
 keep state1no state2no year conttype
 
-/// Drop duplicate observations, keeping highest (lowest) level of contiguity by dyad-year 
+// Drop duplicate observations, keeping highest (lowest) level of contiguity by dyad-year 
 bysort state1no state2no year: egen maxcontig = min(conttype)
 duplicates tag state1no state2no year, gen(dup)
 drop if dup != 0 & conttype != maxcontig
 duplicates drop state1no state2no year, force
 drop maxcontig dup
 
-/// Recode contiguity as binary variable where 1 = contiguous by land or seperated by no more than 24miles of water - reflecting the maximum distance at which two states'12-mile territorial limits can intersect)
+// Recode contiguity as binary variable where 1 = contiguous by land or seperated by no more than 24miles of water
+*| - reflecting the maximum distance at which 12-mile country territorial limits can intersect.
 replace conttype = 0 if conttype > 3 
 replace conttype = 1 if conttype == 2 | conttype == 3
 
-* Save as stata dataset
+* Save as Stata dataset
 *************************
-
-/// Rename variables
+// Rename variables
 rename state1no ccode1
 rename state2no ccode2
 rename conttype contig
 
-/// Generate dyad ID 
+// Generate dyad ID 
 gen udyadid =min(ccode1, ccode2)*1000+max(ccode1,ccode2)
 order udyadid 
 
-/// Label variables
+// Label variables
 label var udyadid "Undirected dyad ID"
 label var ccode1 "COW country code1"
 label var ccode2 "COW country code2"
 label var year "Year"
 label var contig "Contiguous, by land or no more than 24 miles of water"
 
-/// Save
+// Save
 compress 
 save "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data Management\02-Controls & Components\d-Contiguity\scss-0102d-contig.dta", replace
-
 
 * Close Log *
 *************
