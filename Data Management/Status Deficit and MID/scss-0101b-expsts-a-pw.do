@@ -1,5 +1,5 @@
 * Open log *
-*----------*
+************
 
 capture log close
 log using "Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\b-Expected Status\scss-0101b-expsts-a-pw" ,replace
@@ -13,11 +13,11 @@ log using "Data Analysis\Replication Files\Stata Log Files\01-Data Management\01
 ***************************************************
 
 * Description *
-*-------------*
+***************
 * This do file generates community, regional and global measures expected status based on field-ranked CINC scores.
 
 * Set up Stata environment *
-*--------------------------*
+****************************
 version 17
 macro drop _all 
 capture log close 
@@ -65,7 +65,7 @@ save "Status Conflict among Small States\Data Analysis\Datasets\Derived\01-Data 
 
 
 * Close Log *
-*-----------*
+*************
 log close
 exit
 
