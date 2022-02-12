@@ -2,29 +2,28 @@
 *----------*
 
 capture log close
-log using "Status Conflict among Small States\Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\b-Expected Status\scss-0101b-expsts-a-pw" ,replace
+log using "Data Analysis\Replication Files\Stata Log Files\01-Data Management\01-Status Deficit & MID\b-Expected Status\scss-0101b-expsts-a-pw" ,replace
 
 *Programme: scss-0101b-expsts-a-pw.do
-*Project: Status Conflict among Small States
+* Project: How States Really Respond to Status Dissatisfaction: a closer look at the material and temporal dynamics of status-driven conflict.
 *Author: Matthew Tibbles
 
-*-------------------------------------------------*
+***************************************************
 * Generate power-based expected status measures   *
-*-------------------------------------------------*
+***************************************************
 
 * Description *
 *-------------*
 * This do file generates community, regional and global measures expected status based on field-ranked CINC scores.
 
 * Set up Stata environment *
-****************************
+*--------------------------*
 version 17
 macro drop _all 
 capture log close 
 clear all 
 drop _all 
 set linesize 255
-
 
 * Generate expected status variables 
 ************************************
