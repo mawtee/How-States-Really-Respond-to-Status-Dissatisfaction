@@ -26,8 +26,8 @@ log using "Status Conflict among Small States\Data Analysis\Replication Files\St
 
 * Additionally, all group ranks are adjusted for "transition" years, which represent either the 5 year spell before the year in which a country moves to a higher expected
 * status rank (upward transition) OR the 5 year spell after the year in which a country moves to a lower expected status rank (downward transition). 
-* For upwards transition years, a country is attributed the rank which is given in t+5. For downward transition years, a country is attributed the rank which it
-* is given in t-5. The purpose of this design is to account for temporal differences between a country's perception of self and how it is percieved by other countries.
+* For upwards transition years, a country is attributed the rank which is given in t+5. For downward transition years, a country is attributed the rank which
+* is given in t-5. The purpose of this design is to account for temporal differences between a country's perception of self and how it is percieved by others.
 * A rising middle power will see itself as a major power (and thus behave like a major power) before other countries recognise it as such.
 * A fading major power will continue to see itself as a major power (and thus behave like major power) despite being recognised by other countries as a middle power. 
 
