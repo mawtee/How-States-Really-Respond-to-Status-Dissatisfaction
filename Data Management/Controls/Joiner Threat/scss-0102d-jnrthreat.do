@@ -13,7 +13,7 @@ log using "Status Conflict among Small States\Data Analysis\Replication Files\St
 
 * Description *
 ***************
-* This do-file generates a bespoke measure of the threat posed by potential joiners to an MID - joiner-threat.
+* This do-file generates a bespoke measure of the threat posed by potential joiners - joiner-threat.
 * Joiner threat equals the sum of the material capabilities (CINC) of country j's defensive allies and contiguous neighbours.
 
 * Set up Stata environment *
