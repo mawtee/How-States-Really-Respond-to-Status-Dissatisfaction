@@ -14,7 +14,7 @@ log using "Status Conflict among Small States\Data Analysis\Replication Files\St
 * Description *
 ***************
 * This do-file generates a bespoke measure of the threat posed by potential joiners to an MID - joiner-threat.
-* Joiner threat equals the sum of the material capabilities (CINC) of side 2's defensive allies and contiguous neighbours.
+* Joiner threat equals the sum of the material capabilities (CINC) of country j's defensive allies and contiguous neighbours.
 
 * Set up Stata environment *
 ****************************
@@ -137,13 +137,13 @@ foreach yr of numlist 1949/2000 {
     }
 }
 		
-// Generate joiner threat variable (sum of CINC across country i's contigiuous defensive allies)
+// Generate joiner threat variable (sum of CINC across country i's defensive allies and contiguous neighbours)
 bysort ccode1 year: egen jnrthreat = total(mcap_2) if potenjnr == 1
 
-// Fill dyad gaps for non-missing values (where country j is not contigious defensive ally)
+// Fill dyad gaps for non-missing values (where country j is not contigious or defensive ally)
 bysort ccode1 year (jnrthreat): replace jnrthreat = jnrthreat[1] if missing(jnrthreat)
 
-// Recode missing values as 0 (where country i has zero contiguous defensive allies)
+// Recode missing values as 0 (where country i has zero contiguous/defensive allies)
 replace jnrthreat = 0 if jnrthreat == .
 
 // Label variables
