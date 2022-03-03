@@ -242,7 +242,7 @@ by year: egen mdcap = median(mcap)
 // Generate distance bonus indicator (distance > median)
 gen distb = 1 if ccdist > mddist
 
-// Generate capabilities bonus indicator (capabilities < mean
+// Generate capabilities bonus indicator (capabilities < median)
 gen capb = 1 if mcap < mdcap
 
 // Generate distance-capabilities bonus indicator 
